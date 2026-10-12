@@ -4,7 +4,7 @@
  * Everything in the piece (windows, typing) is rendered from the time on
  * this clock, so it can be paused and moved to any point in the piece
  */
-const Clock = {
+export const Clock = {
     offset: 0,
     startedAt: null,
     now() {

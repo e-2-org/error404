@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "timeline": "node _scripts/extract-timeline.js",
-    "minify": "node _scripts/minify.js",
-    "build": "npm run timeline && npm run minify",
+    "build": "npm run timeline",
     "capture": "bundle exec jekyll build && node _scripts/capture.js"
   },
   "repository": {
@@ -23,7 +22,6 @@
     "98.css": "github:jdan/98.css",
     "http-server": "^14.1.1",
     "puppeteer-core": "^25.12.0",
-    "uglify-js": "^3.17.4",
     "xp.css": "github:botoxparty/XP.css"
   }
 }

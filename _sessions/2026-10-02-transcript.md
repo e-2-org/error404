@@ -1,6 +1,6 @@
 # error404 redevelopment - session transcript
 
-Transcript of a Claude Code session (2026-10-02 15:45 UTC to 2026-10-03 17:13 UTC). Tool calls are shown as one-line notes; their output is omitted.
+Transcripts of Claude Code sessions (2026-10-02 15:45 UTC to 2026-10-03 17:13 UTC, 2026-10-08 and 2026-10-12). Tool calls are shown as one-line notes; their output is omitted. Message times weren't recorded for the 8 and 12 October sessions, so only the date is given; Claude's longer replies in the 12 October session are shortened where they repeat the summary.
 
 ---
 
@@ -804,3 +804,419 @@ The videos are different, because a video file can't read the viewer's clock. Th
 I tested `--clock now` with a 1-second render: the taskbar showed 6:12 PM, matching the time at render. It's documented in the README and committed as `4fe235d`.
 
 The two videos already in `output/` start at 12:00. Re-rendering them with `--clock now` takes about 17 minutes if you want that.
+
+---
+
+# Session of 2026-10-08
+
+## User - 2026-10-08
+
+I've been checking through error404 and I think there is a window missing - a postcard should appear at around 322 seconds - can you have a look for it?
+
+## Claude
+
+> *Bash: Explore error404 repo and search for postcard*
+
+> *Bash: Read README and inspect timeline structure*
+
+> *Bash: Dump windows in timeline*
+
+Nothing opens between text11 closing (315.7s) and dodec (334.7s), and text12/text13 are missing from the numbering. Let me look at the old files.
+
+> *Bash: List act 5/6 old files and find text12/13 references*
+
+> *Bash: Inspect cueing in index.html and act 5 files*
+
+> *Bash: Read pcardtitle and look for orphan files*
+
+The original scripts don't open anything between 315.7s and 334.7s. Let me check what the typed text is saying at that point and which window holds the "postcard" content.
+
+> *Bash: Find postcard window and typing structure*
+
+Let me work out when each of those lines is typed.
+
+> *Bash: Inspect typing timing logic*
+
+> *Bash: Find typing source using charMs*
+
+> *Bash: Compute typing time per line around postcards*
+
+The typed line "...for example a postcard read...." finishes at about 327s, and the paper folding windows (dodec, origami) arrive on cue for the next line. So a postcard window belongs around 320–327s, and text12/text13 are missing from the numbering. Let me check for unused images or orphan pages.
+
+> *Bash: Find unused images and never-opened pages*
+
+No orphan postcard page or image in `_old/error404`. Let me check git history and the other copies under `_old` (including the CD image).
+
+> *Bash: Check deleted files and other old dirs*
+
+The CD image (`_old/CD/Image.nrg`) may hold a different copy of the piece. Let me see what's in it.
+
+> *Bash: Look for html file names inside CD image*
+
+The CD has a `06TEXT12.HTM` that isn't in `_old/error404`. I'll extract the CD into the scratchpad so I can compare.
+
+> *Bash: Extract CD image to scratchpad*
+
+> *Bash: Compare CD copy with _old copy*
+
+> *Bash: Look for text12 in ISO and diff changed files*
+
+The diffs look like line-ending noise; I'll compare ignoring CRs and pull `06TEXT12.HTM` out of the ISO9660 tree directly (it's missing from the Joliet names 7z used).
+
+> *Bash: Diff ignoring CRs and extract 06TEXT12*
+
+`06TEXT12.HTM` turns out to be just the ISO 8.3 name for `06text15a.html` (title "15atext"), so the CD copy matches `_old`. Now I'll check which old pages never made it into the timeline.
+
+> *Bash: List old pages missing from timeline*
+
+Every old page is in the timeline (the CD's `06TEXT12.HTM` is the same 14,100 bytes as `06text15a.html`). Next I'll check the cue timing in `index.html` for acts 5 and 6.
+
+> *Bash: Read act 5/6 cueing in index.html*
+
+The original `index.html` has nothing cued between pcardtitle (286s) and dodec (334.5s). But `04text10.html` ("I Am Forever In Debt To Your Priceless Advice / this reply was on a postcard") showed up in my "never opened" list, yet it's in the timeline at 251.7s. Let me see what opens it.
+
+> *Bash: Find what opens text10*
+
+> *Bash: Locate opener of text10 window*
+
+> *Bash: Check extractor for special-cased windows*
+
+> *Bash: Find window.open calls in act 4 pages*
+
+> *Bash: Find text10 references in index and acworld*
+
+Still digging: no postcard window exists in the original scripts or the CD copy, so I'm now tracing how the postcard text window (text10) gets opened. It may be cued in the wrong place.
+
+> *Bash: Inspect text09 and mhalley open calls*
+
+> *Bash: Search everything for text10 references*
+
+> *Bash: List html references in act 4 text pages*
+
+> *Bash: Check text09 encoding and open calls*
+
+> *Bash: Search all old files for hotnasa/dawson/text10*
+
+`04text10.html` failed my earlier grep only because the file isn't UTF-8. It's opened by `04text09.html` at 27s into that window, which matches the 251.7s in the timeline. One last check: the FTP upload log may list files from the live site that aren't in `_old`.
+
+> *Bash: Compare FTP upload log with local files*
+
+I couldn't find a missing postcard window. As far as I can tell from every source in the repo, the original piece never opened anything at 322s.
+
+**What I checked**
+- **The cues in the original `index.html`:** `Focus5` opens the postcard title at 286s, and the next cue (`dodectimer`) opens the dodecahedron at 334.5s. Nothing is scheduled in between.
+- **The postcard title's own chain (`05pcardtitle.html`):** it opens the ruin, tower and pyramid windows, then text11 (the hobbies list), and closes itself at about 319.7s. Text11 closes at 315.7s. So the screen is empty apart from Mrs L and the typing from about 320s to 334.7s.
+- **Every old page against the timeline:** all of them appear in `_data/timeline.json` except `acab.html`, which is the end page. No page has been dropped by the extraction.
+- **The CD image (`_old/CD/Image.nrg`):** I extracted it to the scratchpad. Apart from line endings and the loop setting in `index.html`, its copy is the same as `_old/error404`. It contains a `06TEXT12.HTM`, but that's just the shortened CD name for `06text15a.html` (the origami list).
+- **The FTP upload log (`images/WS_FTP.LOG`):** every file it uploaded to the live site exists locally, and there's no extra postcard image.
+
+**Why it feels like something is missing**
+- The typed line "...for example a postcard read...." finishes at about 327s, and then nothing appears.
+- The text windows jump from text11 to text14. That suggests two postcard texts (text12 and text13) were planned and then cut or never made. The other place they could fit is "One postcard had written in capital letters...", which comes a bit later.
+- The one postcard text that does exist is text10 ("I Am Forever In Debt To Your Priceless Advice / this reply was on a postcard."). The original script opens it at 251.7s, well before the postcards section starts at about 258s.
+
+**A separate problem I noticed:** the origami list window (`text15a`) opens and closes at the same moment (349.95s), so it never shows. Its script slides the window down and closes it once it reaches the bottom of the screen. My guess is that this window is nearly full-screen height, so it already counts as at the bottom and closes at once.
+
+If you can check Anna's composition diagram for what was meant to be at 322s, I can add the window by hand. I can also look into the text15a problem.
+
+## User - 2026-10-08
+
+Can you look in a backup at /mnt/data/archive/wf/p2/e-2.org/subdomains/error404/httpdocs
+
+## Claude
+
+> *Bash: List backup and compare with _old*
+
+The `error404` folder in the backup matches `_old` exactly. The difference is a `test` folder, so I'll look in there.
+
+> *Bash: Explore test folder in backup*
+
+`test` is just web hosting boilerplate (PHP, Perl and CGI test pages). The FTP log shows the piece was originally uploaded to `/public_html/c-ship/projects/error404` on e-2.org, so I'll look for that copy elsewhere in the archive.
+
+> *Bash: Search archive for other error404 copies*
+
+> *Bash: List e-2.org backup layout and interim results*
+
+Two more copies turned up (annabest.info and c-ship.org). I'll compare those against `_old` too.
+
+> *Bash: Compare other archive copies with _old*
+
+The annabest.info copy is identical to `_old`. The c-ship.org copy is an older version with a different `index.html`, so I'll check its act 5/6 cues.
+
+> *Bash: Diff older c-ship index.html*
+
+Nothing changes in acts 5 and 6 there either. I'll check whether the background search found any `text12`/`text13` files.
+
+> *Bash: Check background search results*
+
+I couldn't find a postcard window in that backup either. Its `error404` folder is identical to `_old/error404`. The only extra content is a `test` folder of web hosting boilerplate (PHP, Perl and CGI test pages), nothing to do with the piece.
+
+A search of `/mnt/data/archive/wf` turned up two more copies:
+- **`ab/annabest.info/error404/httpdocs/error404`** is also identical to `_old`.
+- **`p2/c-ship.org/httpdocs/projects/error404`** is an older version. It differs only in the ending (it opens `acab.html` on cship.e-2.org instead of resizing the window), one image preload, a different `kitty.jpg`, and a slightly shorter total time (1,200s instead of 1,212s). Acts 5 and 6 are scripted the same way: postcard title at 286s, dodecahedron at 334.5s, and nothing in between.
+
+So all four copies (the repo, the CD image and the three backups) agree that the original piece showed nothing new between text11 closing (315.7s) and the dodecahedron (334.7s). Combined with the missing text12 and text13, it looks like the postcard was planned but never built, rather than lost.
+
+A search of the whole of `/mnt/data/archive` for any file named `text12` or `text13` is still running. I'll tell you if it finds anything.
+
+## Claude (after the background search finished)
+
+> *Bash: Read final search results*
+
+The archive-wide search has finished, and no file named `text12` or `text13` exists anywhere under `/mnt/data/archive`. The only matches were the three error404 copies I'd already compared.
+
+So nothing anywhere has a postcard window at around 322s, which fits my guess that text12 and text13 were planned but never made. If you'd like one added, I can create it from text Anna gives you or from her composition diagram. It would sit in the gap between 320s and 334s, timed to the typed line "...for example a postcard read....".
+
+## User - 2026-10-08
+
+Can the origami list window open at half window height, move down as scripted, and scroll as it moves?
+
+## Claude
+
+I'll start by looking at how text15a is opened and how the extractor handles moves and scrolls.
+
+> *Bash: Find how text15a is opened*
+
+> *Bash: Read opener size and extractor source*
+
+In the original, the window was opened full-screen and `MoveDown` only moves it while `y < screen height − window height`. In Netscape that's already false, so the window closes straight away. Next I'll see how the page applies scroll keyframes.
+
+> *Bash: Inspect scroll handling in windows.js*
+
+`scrollTop` is set from pixel keyframes, and the browser clamps it to the content. To make the scroll reach the end of the list just as the window reaches the bottom, I need the content's rendered height, so I'll measure it in headless Chrome the same way `capture.js` does.
+
+> *Bash: Check git status, windows.js and capture setup*
+
+> *Bash: Read capture server setup and window build*
+
+Here's the plan. I'll add a small adjustments table to `extract-timeline.js` that opens text15a at half the screen height, so the original `MoveDown` script runs as written. The content will scroll in step with that move. First I'll make the size change and measure the rendered content height.
+
+> *Edit: _scripts/extract-timeline.js (three edits: ADJUSTMENTS table, height override, scroll keyframes)*
+
+The 2380 is a placeholder until I measure. Next I'll regenerate the timeline, rebuild the site, and measure the content height in both themes.
+
+> *Bash: Regenerate timeline, bundle and site*
+
+The window now opens at 349.95s and moves down for 36.8s, as scripted, before closing at 386.85s. Next I'll measure the real content height.
+
+> *Bash: Measure origami window content height in both themes*
+
+Both themes render the content at 1542px, so the scroll should end at 1542 − 344 = 1198px. I'll correct the constant, rebuild and check again.
+
+> *Bash: Fix scroll target, rebuild and re-measure*
+
+Now the scroll reaches the bottom as the window stops. I'll look at a couple of the frames.
+
+> *Read: two rendered frames (Windows at 368s, Mac at 386s)*
+
+The origami list window now opens at half the screen height, slides down as the original script intended, and scrolls its content as it moves. I've rebuilt the timeline and the bundle but haven't committed anything.
+
+**Why it vanished before:** `06beardteacher.html` opened the window full-screen. Its `MoveDown` script moves it down 1px every 100ms and closes it once it reaches the bottom of the screen. A full-screen window starts there already, so it closed straight away.
+
+**The change**, all in `extract-timeline.js`:
+- **New `ADJUSTMENTS` table:** for windows that didn't work as intended in the original, keyed by file name, each entry with a comment explaining why. text15a is the only entry.
+- **Height:** text15a opens with a 344px content area, which with the window frame is half of the 740px screen. That's the only change to its size; the original `MoveDown` script then runs unchanged.
+- **Scroll:** two keyframes take the content from the top to the end over the same span as the move.
+
+**Result in `timeline.json`:**
+
+| | Before | Now |
+|---|---|---|
+| Open | 349.95s | 349.95s |
+| Close | 349.95s | 386.85s |
+| Moves | none | y 1 → 369 |
+| Scroll | none | 0 → 1198px |
+
+The 1198px figure comes from measuring the content in headless Chrome. It's 1542px tall in both the Windows and Mac themes, minus the 344px window. Frames at 355s, 368s and 386s show it moving and scrolling correctly in both themes, and it reaches the end of the list just as it stops.
+
+**Things to be aware of:**
+- **Hard-coded height:** the 1542px is fixed. If the content's fonts or margins change, it needs re-measuring. I left the measuring script in the scratchpad rather than the repo; I can add it to `_scripts` if you'd like.
+- **It runs into the next act:** at the scripted speed it's still moving when act 7 starts at 375.7s. By 386s it's mostly covered by the Fatima and Miracle Library windows, and it passes behind the typing window on the way down. Halving the move time would end it at about 368s, before act 7. That would mean changing the speed the original script set, so I left it alone.
+
+## User - 2026-10-08
+
+Can the height / scroll be adjusted so it reaches the bottom before act 7?
+
+## Claude
+
+Yes. If the window is taller it has less distance to travel, so at the scripted 1px per 100ms it reaches the bottom sooner. Act 7 starts at 375.7s and the window opens at 349.95s. A 240px travel takes 24s, which gets it to the bottom at about 374s.
+
+> *Read: _scripts/extract-timeline.js*
+
+> *Edit: _scripts/extract-timeline.js (new TEXT15A_H constant and comment)*
+
+Next I'll rebuild and check the timing and the end of the scroll.
+
+> *Bash: Rebuild and verify new timing and scroll*
+
+> *Read: rendered frame (Mac at 373.8s)*
+
+The origami list now reaches the bottom of the screen at 373.75s and closes at 373.85s, about 2 seconds before act 7 starts at 375.7s. It still moves at the original script's 1px per 100ms.
+
+**What changed in `extract-timeline.js`:**
+- **Height:** the window's content area is now 474px instead of 344px, so it has 240px to travel instead of 368px.
+- **Constant:** that height is set in a new `TEXT15A_H` constant (`SCREEN.height - 240 - CHROME.y`).
+- **Comment:** the adjustment's comment now gives the timing reasoning.
+- **Scroll:** the scroll target is now 1542 − 474 = 1068px.
+
+I rebuilt and checked both themes in headless Chrome:
+- **At 360s:** it's partway down and partway through the list.
+- **At 373.8s:** it's at the bottom of the screen with the list scrolled to the end ("...send comments/suggestions... to Doug.").
+- **At 375.6s:** it's gone, just before act 7 starts.
+
+In the last frame the bottom of the window is blank. That's because the original page ends with six empty lines, so I've left it as it is. If you'd rather the scroll stopped at the last line of text, I can lower the scroll target to match.
+
+`_data/timeline.json` and the extractor are changed but not committed.
+
+## User - 2026-10-08
+
+Yes, please lowerr the scroll target to match
+
+## Claude
+
+To stop at the last line, I need to know where that line of text ends inside the content. I'll measure that in both themes.
+
+> *Bash: Measure bottom of last text line in both themes*
+
+The last line ends 1409px down in both themes. I'll add the page's normal 8px bottom margin, which gives an end point of 1417px and a scroll target of 1417 − 474 = 943px.
+
+> *Bash: Locate content height references*
+
+> *Bash: Update scroll target, rebuild and verify*
+
+> *Read: rendered frame (Windows at 373.8s)*
+
+I've lowered the scroll target, so the origami list now stops with its last line ("...to Doug.") at the bottom of the window, and the empty lines at the end of the page stay out of view. I checked a frame at 373.8s in both themes and it ends in the same place.
+
+The last line ends 1409px down in both themes. I added the page's normal 8px bottom margin, so the scroll target is now 1417 − 474 = 943px (it was 1068px). The new figures and the reason are in the comment on the adjustment in `extract-timeline.js`.
+
+The timing is unchanged: it opens at 349.95s and reaches the bottom at 373.75s, before act 7. I've rebuilt `_data/timeline.json` and the bundle; nothing is committed yet.
+
+## User - 2026-10-08
+
+Can you update the summary and transcript with this latest session please?
+
+## Claude
+
+> *Bash: Inspect existing session summary and transcripts*
+
+> *Bash: Read rest of summary and transcript format*
+
+> *Bash: Check branch, time and pending changes*
+
+> *Bash: Add 8 October session to summary*
+
+> *Bash: Add 8 October session to transcript*
+
+I've added the 8 October session to the summary and this transcript.
+
+---
+
+# Session of 2026-10-12
+
+## User - 2026-10-12
+
+can you refactor styles in error404 to be plain css using css variables and nesting. Can all the styles for the two themes be nested under the os-mac and os-win classes p-laced on the body, and all styles for both themes loaded instead of switchiung the link href attriburtes?
+
+## Claude
+
+I'll start by looking at how error404's styles and theme switching are set up now.
+
+> *Bash: Survey error404's styles and theme switching*
+
+The theme is currently chosen in `theme.js`. It adds `os-mac` or `os-win` to the `<html>` element and writes a `<link>` to `mac.css` or `win.css`; `desktop.js` swaps that link's `href` from the start dialog. `theme.js` runs in the `<head>`, before the body exists, so putting the class on the body needs a small change to avoid a flash of the wrong theme.
+
+> *Bash: Read the head, layout and theme-switching code*
+
+> *Bash: Read the shared Sass files*
+
+> *Bash: Read the two theme Sass files*
+
+The styles convert cleanly: only variables, nesting and `@import`, and theme rules using `&` in the middle of a selector (`.is-active > &`) keep their meaning under a `.os-win` or `.os-mac` parent. The `<body>` will start as `os-win` (also the theme without JavaScript), and `theme.js` will move to the start of the body and switch it where needed.
+
+> *Bash: Create a branch and move styles to plain CSS files*
+
+> *Bash: Write the main stylesheet*
+
+> *Write: assets/css/themes/win98.css*
+
+> *Write: assets/css/themes/platinum.css*
+
+Nesting makes every theme rule one class stronger; the theme rules were already meant to win over the shared partials, so nothing changes in practice.
+
+> *Bash: Move theme switching to the body class*
+
+> *Bash: Rebuild the bundle and update the README*
+
+> *Bash: Build master and the new branch for comparison (there is no master branch)*
+
+## User (sent while Claude was working) - 2026-10-12
+
+Can you also refactor the Javascript to load using ESM rather than compiling using uglify
+
+## Claude
+
+Yes, I'll do that next. The repo has no `master` branch (the main branch is `develop`), so I'll compare the CSS refactor against `develop` first.
+
+> *Bash: Build the develop branch for comparison (copying the untracked Gemfile into the worktree)*
+
+> *Bash: Pixel-compare develop and the CSS refactor*
+
+The plain CSS renders identically to the Sass version: 0 pixels differ across 14 screenshots, both themes at six moments plus the start dialog.
+
+> *Bash: Read the build script, footer and JS structure*
+
+> *Bash: Check bundle.js, utilities, npm scripts and docs*
+
+> *Bash: Read fullscreen and clock, and map cross-file references*
+
+`main.js` (today's playlist) uses everything, `screenshot.js` uses the clock, and `desktop.js` and `windows.js` use each other, which is fine in ES modules as each only touches the other when it runs.
+
+> *Bash: Read the ends of playlist, screenshot and desktop.fit*
+
+> *Bash: Remove old bundles and convert to modules (the first try stopped at the rebuilt bundle.min.js)*
+
+> *Bash: Load main.js as a module and drop the minify step*
+
+> *Bash: Rebuild and pixel-compare with modules*
+
+Still identical, 0 pixels across all 14 screenshots, with the CSS and JavaScript refactors together.
+
+> *Bash: Test theme switching, playback and buttons*
+
+## User (sent while Claude was working) - 2026-10-12
+
+I'd also like a filter put on the click listener for the window close buttons to prevent the main scroller and the Mrs L windows from being closed
+
+## Claude
+
+Everything works with modules. Now the close-button filter: the main scroller is the window `scroller`, and Mrs L's is `carla`.
+
+> *Bash: Find the close button listener and the two window ids*
+
+> *Edit: assets/js/windows.js (skip the windows in Windows.permanent)*
+
+> *Bash: Test that the typing and Mrs L windows can't be closed (the control window, mall, had already closed)*
+
+> *Bash: Retest closing with a visible ordinary window*
+
+> *Bash: Remove the worktree and stage the refactor*
+
+All three changes are done, on a new `plain-css` branch, staged but not committed.
+
+- **CSS:** plain CSS with nesting and custom properties; `style.css` imports the shared partials and both themes, each nested under `.os-win` or `.os-mac`; the body starts as `os-win` and `theme.js`, now at the start of the body, switches it; the dialog just swaps the class.
+- **JavaScript:** ES modules in `assets/js/`, with `main.js` as the entry point; uglify, `minify.js`, the bundles and the unused `utilities.js` removed; `theme.js` stays inline.
+- **Close boxes:** the typing window and Mrs L can't be closed (`Windows.permanent`).
+- **Checks:** identical to `develop` in 14 screenshots; theme switching, playback and both buttons tested; the close filter tested in both themes.
+
+## User - 2026-10-12
+
+OK, please update the _sessions files and I'll get it all committed
+
+## Claude
+
+> *Bash: Read your session edits and the files' current ends*
+
+> *Bash: Add the 12 October session to the summary and transcript*
+
+I've added the 12 October session to the summary and this transcript.

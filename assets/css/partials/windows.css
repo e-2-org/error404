@@ -34,7 +34,7 @@
 	display: flex;
 	flex: none;
 }
-/* the Mac zoom and collapse boxes (platinum.scss) */
+/* the Mac zoom and collapse boxes (themes/platinum.css) */
 .title-bar-boxes {
 	display: none;
 }

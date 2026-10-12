@@ -1,0 +1,17 @@
+/**
+ * error404
+ *
+ * Plain CSS, using nesting and custom properties. Everything is loaded:
+ *  - partials: the layout both desktop themes share
+ *  - themes: Windows 98 and Mac OS 8/9, each nested under its class on the
+ *    body (os-win or os-mac), which theme.js sets and the start dialog
+ *    changes (desktop.js)
+ */
+@import url("partials/utilities.css");
+@import url("partials/fullscreen.css");
+@import url("partials/base.css");
+@import url("partials/windows.css");
+@import url("partials/typing.css");
+@import url("partials/dialog.css");
+@import url("themes/win98.css");
+@import url("themes/platinum.css");

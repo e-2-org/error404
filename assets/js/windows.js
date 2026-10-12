@@ -12,7 +12,9 @@
  *
  * Keyframes are interpolated linearly, everything else is a step.
  */
-const Windows = {
+import { Desktop } from './desktop.js';
+
+export const Windows = {
     list: [],
     active: null,
     build(timeline, container) {
@@ -47,12 +49,14 @@ const Windows = {
         container.addEventListener('click', e => {
             if (e.target.closest('.title-bar-controls button[aria-label="Close"]')) {
                 const win = this.list.find(w => w.el === e.target.closest('.window'));
-                if (win) {
+                if (win && !this.permanent.includes(win.data.id)) {
                     win.dismissed = true;
                 }
             }
         });
     },
+    /* windows which can't be closed: the typing window and Mrs L, there from start to end */
+    permanent: ['scroller', 'carla'],
     get(id) {
         return this.list.find(w => w.data.id === id);
     },

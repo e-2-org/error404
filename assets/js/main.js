@@ -11,7 +11,19 @@
  * piece doesn't play, and window.renderAt(ms) renders any moment of it.
  * ?clock=HH:MM sets the time shown on the desktop clock at the start.
  */
-document.addEventListener('DOMContentLoaded', function () {
+import { Clock } from './clock.js';
+import { Desktop } from './desktop.js';
+import { Windows } from './windows.js';
+import { Typing } from './typing.js';
+import { Screenshot } from './screenshot.js';
+import { initFullscreen } from './fullscreen.js';
+
+/* modules run once the page has been read, so everything can start straight away */
+initFullscreen();
+play();
+Screenshot.init();
+
+function play() {
     const timeline = JSON.parse(document.getElementById('timeline-data').textContent);
     const params = new URLSearchParams(location.search);
     const startAt = (parseFloat(params.get('t')) || 0) * 1000;
@@ -112,4 +124,4 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         document.getElementById('dialog-start').focus();
     }
-});
+}

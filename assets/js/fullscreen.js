@@ -1,4 +1,7 @@
-document.addEventListener( 'DOMContentLoaded', function(e){
+/**
+ * The fullscreen button, where the browser allows fullscreen
+ */
+export function initFullscreen() {
     if ( document.fullscreenEnabled ) {
         const toggleBtn = document.querySelector('.js-toggle-fullscreen-btn');
         toggleBtn.hidden = false;
@@ -22,4 +25,4 @@ document.addEventListener( 'DOMContentLoaded', function(e){
             }
         }
     }
-});
+}
