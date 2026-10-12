@@ -29,10 +29,9 @@ The original popup scripts are kept in `_old/`. Rather than converting them by h
 
 ```
 npm run timeline   # regenerate _data/timeline.json from _old/
-npm run minify     # build assets/js/bundle.min.js
 ```
 
-In the page, windows are created from the timeline (`windows.js`) and the typed text is recreated from the tinyType applet's parameters (`typing.js`). Everything is rendered from a single clock (`clock.js`), so the windows and the text stay in step and the piece can be paused or started part way through:
+The JavaScript is in `assets/js/` as ES modules, loaded by the browser from `main.js` with no build step. In the page, windows are created from the timeline (`windows.js`) and the typed text is recreated from the tinyType applet's parameters (`typing.js`). Everything is rendered from a single clock (`clock.js`), so the windows and the text stay in step and the piece can be paused or started part way through:
 
 * `?t=<seconds>` starts the piece at that point
 * `?debug` shows the time
@@ -54,7 +53,9 @@ node _scripts/capture.js --os win --from 60 --to 90    # a test clip (seconds)
 
 The original loaded different styles for Macs (`e2_mac.css`). The redevelopment has two desktop themes, which style the same window markup:
 
-* Windows 98 (`assets/css/win.scss`, `_sass/themes/win98.scss`), based on [98.css](https://github.com/jdan/98.css)
-* Mac OS 8/9 Platinum (`assets/css/mac.scss`, `_sass/themes/platinum.scss`), using the public domain ChicagoFLF font
+* Windows 98 (`assets/css/themes/win98.css`), based on [98.css](https://github.com/jdan/98.css)
+* Mac OS 8/9 Platinum (`assets/css/themes/platinum.css`), using the public domain ChicagoFLF font
 
-The theme is chosen from the viewer's platform in the `<head>` (`_includes/javascript/theme.js`), and can be overridden with `?os=mac` or `?os=win`, or in the start dialog. Both themes must fit their window frame and title bar into 6px horizontally and 26px vertically (see `CHROME` in `extract-timeline.js`).
+The styles are plain CSS, using nesting and custom properties. `assets/css/style.css` loads the layout both themes share (`assets/css/partials/`) and both themes, each nested under its class on the `<body>` (`os-win` or `os-mac`).
+
+The theme is chosen from the viewer's platform at the start of the `<body>` (`_includes/javascript/theme.js`), and can be overridden with `?os=mac` or `?os=win`, or in the start dialog. Both themes must fit their window frame and title bar into 6px horizontally and 26px vertically (see `CHROME` in `extract-timeline.js`).

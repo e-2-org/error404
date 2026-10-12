@@ -9,7 +9,9 @@
  * The page is turned into an image by html-to-image, which is only loaded
  * the first time a screenshot is taken.
  */
-const Screenshot = {
+import { Clock } from './clock.js';
+
+export const Screenshot = {
     library: 'https://cdn.jsdelivr.net/npm/html-to-image@1.11.13/dist/html-to-image.js',
     busy: false,
     init() {
@@ -57,7 +59,7 @@ const Screenshot = {
     },
     filename(ms) {
         const s = Math.floor(ms / 1000);
-        const os = document.documentElement.classList.contains('os-mac') ? 'mac' : 'win';
+        const os = document.body.classList.contains('os-mac') ? 'mac' : 'win';
         return 'error404-' + os + '-' + String(Math.floor(s / 60)).padStart(2, '0') + 'm' + String(s % 60).padStart(2, '0') + 's.png';
     },
     load() {
@@ -105,4 +107,3 @@ const Screenshot = {
         } catch (e) {}
     }
 };
-document.addEventListener('DOMContentLoaded', () => Screenshot.init());

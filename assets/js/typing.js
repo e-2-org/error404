@@ -6,7 +6,7 @@
  * the composition. Here the number of letters typed is worked out from the
  * clock, so the text stays in step with the windows.
  */
-const Typing = {
+export const Typing = {
     lines: [],
     ends: [],
     typed: -1,

@@ -2,7 +2,9 @@
  * The desktop: a 1024x768 screen (the resolution the piece was made for)
  * scaled to fit the browser window, with a Windows taskbar or Mac menu bar
  */
-const Desktop = {
+import { Windows } from './windows.js';
+
+export const Desktop = {
     init() {
         this.screen = document.getElementById('screen');
         this.tasks = document.querySelector('.taskbar-tasks');
@@ -14,7 +16,7 @@ const Desktop = {
             setInterval(() => this.tick(), 1000);
         }
         document.querySelectorAll('input[name="os"]').forEach(input => {
-            input.checked = document.documentElement.classList.contains('os-' + input.value);
+            input.checked = document.body.classList.contains('os-' + input.value);
             input.addEventListener('change', () => this.setTheme(input.value));
         });
     },
@@ -35,15 +37,12 @@ const Desktop = {
         root.setProperty('--left', snap((window.innerWidth - 1024 * scale) / 2) + 'px');
         root.setProperty('--top', snap((window.innerHeight - 768 * scale) / 2) + 'px');
         /* make windows.js reposition every window */
-        if (typeof Windows !== 'undefined') {
-            Windows.list.forEach(win => win.x = win.y = null);
-        }
+        Windows.list.forEach(win => win.x = win.y = null);
     },
+    /* both themes' styles are loaded, each nested under its class on the body */
     setTheme(os) {
-        document.documentElement.classList.remove('os-mac', 'os-win');
-        document.documentElement.classList.add('os-' + os);
-        const link = document.getElementById('theme-css');
-        link.href = link.href.replace(/(mac|win)\.css/, os + '.css');
+        document.body.classList.remove('os-mac', 'os-win');
+        document.body.classList.add('os-' + os);
         try {
             localStorage.setItem('error404-os', os);
         } catch (e) {}

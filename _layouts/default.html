@@ -2,7 +2,10 @@
 <html lang="{{ page.lang | default: site.lang | default: "en" }}">
 {% include head.html %}
 
-<body>
+<body class="os-win">
+    <script>
+    {% include javascript/theme.js %}
+    </script>
     <main id="screen" class="desktop">
         {% include menubar.html %}
         <div id="windows"></div>
