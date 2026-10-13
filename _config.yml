@@ -19,7 +19,7 @@ description: >-
   The website was launched at the Lux in London.
 environment: development
 url: "https://e-2-org.github.io"
-baseurl: "error404/"
+baseurl: "/error404"
 imagedir: "/assets/images/"
 destination: _site/
 host: "localhost"
