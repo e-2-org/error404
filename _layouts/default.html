@@ -17,6 +17,7 @@
     <div id="debug" hidden></div>
     {% include fullscreen.html %}
     {% include windows.html %}
+    {% if site.video_url != "" %}{% include video.html %}{% endif %}
     <script id="timeline-data" type="application/json">{{ site.data.timeline | jsonify }}</script>
     {% include foot.html %}
 </body>

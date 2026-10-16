@@ -12,7 +12,8 @@
             <label><input type="radio" name="os" value="mac"> Mac OS 8</label>
         </fieldset>
         <div class="dialog-buttons">
-            <button id="dialog-start"><span class="dialog-start-text">Start</span><span class="dialog-ended-text">Play again</span></button>
+            {% if site.video_url != "" %}<button id="dialog-video">Watch video</button>{% endif %}
+            <button id="dialog-start" class="is-default"><span class="dialog-start-text">Start</span><span class="dialog-ended-text">Play again</span></button>
         </div>
     </div>
 </div>

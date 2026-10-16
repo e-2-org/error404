@@ -21,6 +21,9 @@ environment: development
 url: "https://e-2-org.github.io"
 baseurl: "/error404"
 imagedir: "/assets/images/"
+# where the videos played from the start dialog are hosted: the folder (or
+# URL prefix) holding error404-win.mp4 and error404-mac.mp4
+video_url: ""
 destination: _site/
 host: "localhost"
 google_analytics: ""

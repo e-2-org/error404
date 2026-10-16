@@ -17,11 +17,13 @@ import { Windows } from './windows.js';
 import { Typing } from './typing.js';
 import { Screenshot } from './screenshot.js';
 import { initFullscreen } from './fullscreen.js';
+import { Video } from './video.js';
 
 /* modules run once the page has been read, so everything can start straight away */
 initFullscreen();
 play();
 Screenshot.init();
+Video.init();
 
 function play() {
     const timeline = JSON.parse(document.getElementById('timeline-data').textContent);

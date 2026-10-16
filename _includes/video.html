@@ -1,0 +1,14 @@
+{%- comment -%}
+    The piece as a video, in an overlay opened from the start dialog (video.js).
+    The videos are rendered by _scripts/capture.js, one for each desktop theme
+    (error404-win.mp4 and error404-mac.mp4), and hosted at video_url in _config.yml
+{%- endcomment -%}
+{%- assign video_url = site.video_url | append: "/" | replace: "//", "/" | replace: ":/", "://" -%}
+<dialog id="video-overlay" class="video-overlay" aria-label="error404 (video)" data-src="{{ video_url }}error404-">
+    <video controls playsinline preload="none" width="1024" height="768"></video>
+    <button class="video-close" aria-label="Close video" title="Close video">
+        <svg class="video-close-svg" width="28" height="28" viewBox="-2 -2 28 28" aria-hidden="true">
+            <path d="M 4 4 L 20 20 M 20 4 L 4 20" />
+        </svg>
+    </button>
+</dialog>

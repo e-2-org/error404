@@ -38,11 +38,20 @@ if (opts.clock === 'now') {
     opts.clock = now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0');
 }
 
-/* a minimal static server for the built site */
+/* the site's links start with baseurl from _config.yml, e.g. /error404 */
+const config = fs.readFileSync(path.join(ROOT, '_config.yml'), 'utf8');
+const BASE = ('/' + ((config.match(/^baseurl:\s*["']?([^"'\n]*)["']?\s*$/m) || [])[1] || '')).replace(/\/+/g, '/').replace(/\/$/, '');
+
+/* a minimal static server for the built site, at baseurl */
 function serve() {
     const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.gif': 'image/gif', '.jpg': 'image/jpeg', '.png': 'image/png', '.woff': 'font/woff', '.woff2': 'font/woff2', '.ttf': 'font/ttf', '.svg': 'image/svg+xml' };
     const server = http.createServer((req, res) => {
-        let file = path.join(SITE, decodeURIComponent(new URL(req.url, 'http://x').pathname));
+        const pathname = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+        if (BASE && !(pathname === BASE || pathname.startsWith(BASE + '/'))) {
+            res.writeHead(404).end();
+            return;
+        }
+        let file = path.join(SITE, pathname.slice(BASE.length) || '/');
         if (file.endsWith('/')) file += 'index.html';
         if (!file.startsWith(SITE) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
             res.writeHead(404).end();
@@ -102,7 +111,7 @@ async function renderChunk(url, first, last, file) {
     const server = await serve();
     const browser = await launch();
     for (const os of opts.os.split(',')) {
-        const url = `http://127.0.0.1:${server.address().port}/?capture&os=${os}&clock=${opts.clock}`;
+        const url = `http://127.0.0.1:${server.address().port}${BASE}/?capture&os=${os}&clock=${opts.clock}`;
         const { page, info } = await openPiece(browser, url);
         await page.close();
         const first = opts.from ? Math.round(parseFloat(opts.from) * fps) : 0;

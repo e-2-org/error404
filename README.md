@@ -49,6 +49,8 @@ node _scripts/capture.js --os mac --jobs 6             # one theme
 node _scripts/capture.js --os win --from 60 --to 90    # a test clip (seconds)
 ```
 
+The start dialog's **Watch video** button plays the video for the chosen desktop theme in an overlay (`assets/js/video.js`). The videos aren't kept in the repo: upload the renders from `output/` and set `video_url` in `_config.yml` to the folder (or URL prefix) that holds `error404-win.mp4` and `error404-mac.mp4`. While `video_url` is empty, the button isn't shown.
+
 ### Desktop themes
 
 The original loaded different styles for Macs (`e2_mac.css`). The redevelopment has two desktop themes, which style the same window markup:
