@@ -1,6 +1,6 @@
 # error404 redevelopment: session summary
 
-2, 3 and 8 October 2026, working with Claude Code on the `develop` branch, and 12 October on the `plain-css` branch. The full conversations are in [2026-10-02-transcript.md](2026-10-02-transcript.md).
+2, 3 and 8 October 2026, working with Claude Code on the `develop` branch, and 12 October on the `plain-css` branch. The full conversations are in [transcript.md](transcript.md).
 
 ## Where things stood
 
