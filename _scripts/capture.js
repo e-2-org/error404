@@ -1,7 +1,7 @@
 /**
  * Renders error404 to video, one video for each desktop theme
  *
- * Opens the built site (_site, so run `bundle exec jekyll build` first) in
+ * Opens the built site (docs/_site, so run `bundle exec jekyll build` in docs/ first) in
  * headless Chrome at 1024x768 - the resolution the piece was composed for -
  * renders each frame at an exact time with window.renderAt() and pipes
  * screenshots to ffmpeg. The piece is split into chunks which are rendered in
@@ -23,7 +23,7 @@ const { spawn } = require('child_process');
 const puppeteer = require('puppeteer-core');
 
 const ROOT = path.resolve(__dirname, '..');
-const SITE = path.join(ROOT, '_site');
+const SITE = path.join(ROOT, 'docs', '_site');
 const OUT = path.join(ROOT, 'output');
 const CHROME = process.env.CHROME_PATH || '/usr/bin/google-chrome';
 
@@ -39,7 +39,7 @@ if (opts.clock === 'now') {
 }
 
 /* the site's links start with baseurl from _config.yml, e.g. /error404 */
-const config = fs.readFileSync(path.join(ROOT, '_config.yml'), 'utf8');
+const config = fs.readFileSync(path.join(ROOT, 'docs', '_config.yml'), 'utf8');
 const BASE = ('/' + ((config.match(/^baseurl:\s*["']?([^"'\n]*)["']?\s*$/m) || [])[1] || '')).replace(/\/+/g, '/').replace(/\/$/, '');
 
 /* a minimal static server for the built site, at baseurl */
@@ -104,7 +104,7 @@ async function renderChunk(url, first, last, file) {
 
 (async () => {
     if (!fs.existsSync(path.join(SITE, 'index.html'))) {
-        console.error('_site not found - run `bundle exec jekyll build` first');
+        console.error('docs/_site not found - run `bundle exec jekyll build` in docs/ first');
         process.exit(1);
     }
     fs.mkdirSync(OUT, { recursive: true });

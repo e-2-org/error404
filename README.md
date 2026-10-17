@@ -28,7 +28,7 @@ Windows which moved on screen were animated using script running within them.
 The original popup scripts are kept in `_old/`. Rather than converting them by hand, `_scripts/extract-timeline.js` runs them: each popup's script is executed in a sandbox against a virtual clock and a virtual 1024x768 screen (the resolution the piece was composed for), emulating Netscape 4. Every window opened, moved, scrolled, raised and closed is recorded, and the result is written to `_data/timeline.json` with absolute times in milliseconds.
 
 ```
-npm run timeline   # regenerate _data/timeline.json from _old/
+npm run timeline   # regenerate docs/_data/timeline.json from _old/
 ```
 
 The JavaScript is in `assets/js/` as ES modules, loaded by the browser from `main.js` with no build step. In the page, windows are created from the timeline (`windows.js`) and the typed text is recreated from the tinyType applet's parameters (`typing.js`). Everything is rendered from a single clock (`clock.js`), so the windows and the text stay in step and the piece can be paused or started part way through:
@@ -61,3 +61,7 @@ The original loaded different styles for Macs (`e2_mac.css`). The redevelopment 
 The styles are plain CSS, using nesting and custom properties. `assets/css/style.css` loads the layout both themes share (`assets/css/partials/`) and both themes, each nested under its class on the `<body>` (`os-win` or `os-mac`).
 
 The theme is chosen from the viewer's platform at the start of the `<body>` (`_includes/javascript/theme.js`), and can be overridden with `?os=mac` or `?os=win`, or in the start dialog. Both themes must fit their window frame and title bar into 6px horizontally and 26px vertically (see `CHROME` in `extract-timeline.js`).
+
+## Layout
+
+The Jekyll site is in `docs/`, which is what GitHub Pages publishes; the site paths above (`assets/`, `_includes/`, `_data/`) are inside `docs/`. To run it locally, use `bundle exec jekyll serve` from inside `docs/`. The original piece (`_old/`, kept locally and not in git), the scripts, `package.json` and the README stay at the top of the repository, so they aren't published. Summaries and transcripts of the Claude Code sessions are in `_sessions/`.

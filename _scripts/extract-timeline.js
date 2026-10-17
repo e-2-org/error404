@@ -10,7 +10,7 @@
  * The browser emulated is Netscape 4 with zero window chrome, so positions
  * like env.w-(winx(w)) resolve to exact screen edges.
  *
- * Output: _data/timeline.json, used by the windows include and playlist.js
+ * Output: docs/_data/timeline.json, used by the windows include and playlist.js
  *
  * Usage: node _scripts/extract-timeline.js
  */
@@ -20,8 +20,8 @@ const vm = require('vm');
 
 const OLD = path.resolve(__dirname, '../_old');
 const SRC = path.join(OLD, 'error404');
-const OUT = path.resolve(__dirname, '../_data/timeline.json');
-const IMAGES = path.resolve(__dirname, '../assets/images');
+const OUT = path.resolve(__dirname, '../docs/_data/timeline.json');
+const IMAGES = path.resolve(__dirname, '../docs/assets/images');
 
 /**
  * The screen the original scripts see: the 1024x768 screen the piece was

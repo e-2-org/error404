@@ -6,7 +6,7 @@
   "scripts": {
     "timeline": "node _scripts/extract-timeline.js",
     "build": "npm run timeline",
-    "capture": "bundle exec jekyll build && node _scripts/capture.js"
+    "capture": "cd docs && bundle exec jekyll build && cd .. && node _scripts/capture.js"
   },
   "repository": {
     "type": "git",
